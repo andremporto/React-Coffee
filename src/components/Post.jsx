@@ -12,9 +12,13 @@ export function Post({ author, publishedAt, content }) {
 
 	const [newCommentText, setNewCommentText] = useState("");
 
-	const publishedDateFormatted = format(publishedAt, "d 'de' LLLL 'às' HH:mm'h'", {
-		locale: ptBR,
-	});
+	const publishedDateFormatted = format(
+		publishedAt,
+		"d 'de' LLLL 'às' HH:mm'h'",
+		{
+			locale: ptBR,
+		}
+	);
 
 	const publishDateRelativeToNow = formatDistanceToNow(publishedAt, {
 		locale: ptBR,
@@ -32,6 +36,14 @@ export function Post({ author, publishedAt, content }) {
 		setNewCommentText(event.target.value);
 	}
 
+	function deleteComment(commentToDelete) {
+		const commentsWithoutDeletedOne = comments.filter((comment) => {
+			return comment !== commentToDelete;
+		});
+
+		setComments(commentsWithoutDeletedOne);
+	}
+
 	return (
 		<article className={styles.post}>
 			<header>
@@ -43,7 +55,10 @@ export function Post({ author, publishedAt, content }) {
 					</div>
 				</div>
 
-				<time title={publishedDateFormatted} dateTime={publishedAt.toISOString()}>
+				<time
+					title={publishedDateFormatted}
+					dateTime={publishedAt.toISOString()}
+				>
 					{publishDateRelativeToNow}
 				</time>
 			</header>
@@ -79,7 +94,13 @@ export function Post({ author, publishedAt, content }) {
 
 			<div className={styles.commentList}>
 				{comments.map((comment) => {
-					return <Comment key={comment} content={comment} />;
+					return (
+						<Comment
+							key={comment}
+							content={comment}
+							onDeleteComment={deleteComment}
+						/>
+					);
 				})}
 			</div>
 		</article>

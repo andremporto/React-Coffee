@@ -23,7 +23,8 @@ const posts = [
 			},
 			{
 				type: "paragraph",
-				content: "Clica no link abaixo e vai conferir. Não custa nada vai... 😬",
+				content:
+					"Clica no link abaixo e vai conferir. Não custa nada vai... 😬",
 			},
 			{ type: "link", content: "https://github.com/andremporto" },
 		],
@@ -46,7 +47,8 @@ const posts = [
 			},
 			{
 				type: "paragraph",
-				content: "Clica no link abaixo e vai conferir. Não custa nada vai... 😬",
+				content:
+					"Clica no link abaixo e vai conferir. Não custa nada vai... 😬",
 			},
 			{ type: "link", content: "https://github.com/andremporto" },
 		],
