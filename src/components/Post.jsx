@@ -1,39 +1,49 @@
+import { format, formatDistanceToNow } from "date-fns";
+import ptBR from "date-fns/locale/pt-BR";
+
 import { Avatar } from "./Avatar";
 import { Comment } from "./Comment";
 
 import styles from "./Post.module.css";
 
-export function Post() {
+export function Post({ author, publishedAt, content }) {
+	const publishedDateFormatted = format(publishedAt, "d 'de' LLLL 'às' HH:mm'h'", {
+		locale: ptBR,
+	});
+
+	const publishDateRelativeToNow = formatDistanceToNow(publishedAt, {
+		locale: ptBR,
+		addSuffix: true,
+	});
+
 	return (
 		<article className={styles.post}>
 			<header>
 				<div className={styles.author}>
-					<Avatar src="https://github.com/andremporto.png" />
+					<Avatar src={author.avatarUrl} />
 					<div className={styles.authorInfo}>
-						<strong>André Porto</strong>
-						<span>Software Engineer</span>
+						<strong>{author.name}</strong>
+						<span>{author.role}</span>
 					</div>
 				</div>
 
-				<time title="20 de Março às 17:20" dateTime="2023-03-19 10:25:30">
-					Publicado há 1h
+				<time title={publishedDateFormatted} dateTime={publishedAt.toISOString()}>
+					{publishDateRelativeToNow}
 				</time>
 			</header>
 
 			<div className={styles.content}>
-				<p>E aí seus feio 👋</p>
-				<p>
-					Acabei de subir mais um projeto no meu portfólio. É esse projeto aqui que você tá vendo.
-					Um formulário de comentários todo estiloso. Fiz ele utilizando HTML, CSS e principalmente
-					React ⚛️.
-				</p>
-				<p>Clica no link abaixo e vai conferir. Não custa nada vai... 😬</p>
-				<p>
-					<a href="">https://github.com/andremporto</a>
-				</p>
-				<p>
-					<a href="">#novoprojeto</a> <a href="">#react</a> <a href="">#javascript</a>{" "}
-				</p>
+				{content.map((line) => {
+					if (line.type === "paragraph") {
+						return <p>{line.content}</p>;
+					} else if (line.type === "link") {
+						return (
+							<p>
+								<a href="">{line.content}</a>
+							</p>
+						);
+					}
+				})}
 			</div>
 
 			<form className={styles.commentForm}>
